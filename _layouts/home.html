@@ -1,0 +1,72 @@
+---
+layout: default
+---
+
+<div class="home-hero">
+    <h1 class="site-title">{{ site.title }}<span class="cursor">_</span></h1>
+    <p class="site-tagline">{{ site.description }}</p>
+</div>
+
+<section class="about-section">
+    <h2 class="section-title">// About</h2>
+    <div class="about-content">
+        {{ content }}
+    </div>
+</section>
+
+<section class="featured-post">
+    <h2 class="section-title">// Featured Post</h2>
+    {% assign featured = site.posts | where: "featured", true | first %}
+    {% if featured %}
+    <article class="post-card featured">
+        <div class="post-meta">
+            <span class="post-category">{{ featured.category }}</span>
+            <span class="post-date">{{ featured.date | date: "%B %d, %Y" }}</span>
+        </div>
+        <h3 class="post-title">
+            <a href="{{ featured.url | relative_url }}">{{ featured.title }}</a>
+        </h3>
+        <p class="post-excerpt">{{ featured.excerpt | strip_html | truncate: 200 }}</p>
+        <a href="{{ featured.url | relative_url }}" class="read-more">Read more →</a>
+    </article>
+    {% endif %}
+</section>
+
+<section class="sections-grid">
+    <h2 class="section-title">// Explore</h2>
+    <div class="grid">
+        <a href="{{ '/spirituality/' | relative_url }}" class="section-card">
+            <h3>Spirituality</h3>
+            <p>Exploring Sanatan Dharm and spiritual practices</p>
+            <span class="arrow">→</span>
+        </a>
+        <a href="{{ '/travel/' | relative_url }}" class="section-card">
+            <h3>Travel</h3>
+            <p>Adventures across 5 countries and national parks</p>
+            <span class="arrow">→</span>
+        </a>
+        <a href="{{ '/productivity/' | relative_url }}" class="section-card">
+            <h3>Productivity</h3>
+            <p>Self-help insights and productivity hacks</p>
+            <span class="arrow">→</span>
+        </a>
+    </div>
+</section>
+
+<section class="recent-posts">
+    <h2 class="section-title">// Recent Posts</h2>
+    <div class="posts-list">
+        {% for post in site.posts limit:6 %}
+        <article class="post-card">
+            <div class="post-meta">
+                <span class="post-category">{{ post.category }}</span>
+                <span class="post-date">{{ post.date | date: "%B %d, %Y" }}</span>
+            </div>
+            <h3 class="post-title">
+                <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+            </h3>
+            <p class="post-excerpt">{{ post.excerpt | strip_html | truncate: 150 }}</p>
+        </article>
+        {% endfor %}
+    </div>
+</section>

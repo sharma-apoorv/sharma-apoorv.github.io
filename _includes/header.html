@@ -1,0 +1,28 @@
+<header class="site-header">
+    <nav class="navbar">
+        <a href="{{ '/' | relative_url }}" class="logo">
+            <span class="code-symbol">&lt;/&gt;</span>
+            <span class="logo-text">{{ site.title }}</span>
+        </a>
+
+        <button class="mobile-menu-toggle" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <ul class="nav-links">
+            <li><a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>Home</a></li>
+            <li><a href="{{ '/spirituality/' | relative_url }}" {% if page.url contains '/spirituality' %}class="active"{% endif %}>Spirituality</a></li>
+            <li><a href="{{ '/travel/' | relative_url }}" {% if page.url contains '/travel' %}class="active"{% endif %}>Travel</a></li>
+            <li><a href="{{ '/productivity/' | relative_url }}" {% if page.url contains '/productivity' %}class="active"{% endif %}>Productivity</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle {% if page.url contains '/about' or page.url contains '/stats' %}active{% endif %}">About ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ '/about/' | relative_url }}">About Me</a></li>
+                    <li><a href="{{ '/stats/' | relative_url }}">My Stats</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</header>

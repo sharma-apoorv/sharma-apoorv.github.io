@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debugging the Self</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0e27;
+            color: #e0e6ed;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-text {
+            background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .code-symbol {
+            color: #06b6d4;
+            font-family: monospace;
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #06b6d4;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #06b6d4, #8b5cf6);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            padding: 5rem 2rem 4rem;
+            text-align: center;
+            background: radial-gradient(ellipse at top, rgba(6, 182, 212, 0.15), transparent);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(6, 182, 212, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(6, 182, 212, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            background: linear-gradient(135deg, #06b6d4, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            font-family: monospace;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: #94a3b8;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-tagline {
+            font-size: 1rem;
+            color: #64748b;
+            font-style: italic;
+            margin-bottom: 3rem;
+        }
+
+        .interests-tags {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .interest-tag {
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            color: #06b6d4;
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .interest-tag:hover {
+            background: rgba(6, 182, 212, 0.2);
+            border-color: rgba(6, 182, 212, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .content-sections {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #e0e6ed;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .view-all {
+            color: #06b6d4;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .view-all:hover {
+            color: #8b5cf6;
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .featured-post {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .featured-post:hover {
+            transform: translateY(-5px);
+            border-color: rgba(6, 182, 212, 0.6);
+            box-shadow: 0 20px 60px rgba(6, 182, 212, 0.3);
+        }
+
+        .featured-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.3), rgba(139, 92, 246, 0.3));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+        }
+
+        .featured-content {
+            padding: 2rem;
+        }
+
+        .featured-category {
+            color: #06b6d4;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .featured-post h3 {
+            color: #e0e6ed;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .featured-post p {
+            color: #94a3b8;
+            line-height: 1.8;
+        }
+
+        .featured-date {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .sidebar-posts {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .sidebar-post {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .sidebar-post:hover {
+            border-color: rgba(139, 92, 246, 0.6);
+            transform: translateX(5px);
+        }
+
+        .sidebar-post h4 {
+            color: #e0e6ed;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .sidebar-post p {
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+
+        .categories-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .category-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #06b6d4, #8b5cf6);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .category-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .category-card:hover {
+            border-color: rgba(6, 182, 212, 0.5);
+            transform: translateY(-5px);
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-card h3 {
+            color: #e0e6ed;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-count {
+            color: #06b6d4;
+            font-size: 0.9rem;
+        }
+
+        .category-card p {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .blog-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(139, 92, 246, 0.5);
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.3);
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.3));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .blog-content {
+            padding: 1.5rem;
+        }
+
+        .blog-category {
+            color: #06b6d4;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .blog-card h3 {
+            color: #e0e6ed;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .blog-card p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+
+        .footer {
+            background: rgba(15, 23, 42, 0.8);
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .footer-about h3 {
+            color: #06b6d4;
+            margin-bottom: 1rem;
+        }
+
+        .footer-about p {
+            color: #94a3b8;
+            line-height: 1.8;
+        }
+
+        .footer-links h4 {
+            color: #e0e6ed;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            color: #06b6d4;
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 2rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(6, 182, 212, 0.1);
+            text-align: center;
+            color: #64748b;
+        }
+
+        @media (max-width: 1024px) {
+            .featured-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .categories-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <span class="code-symbol">&lt;/&gt;</span>
+                <span class="logo-text">Debugging the Self</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#tech">Tech & Code</a></li>
+                <li><a href="#adventures">Adventures</a></li>
+                <li><a href="#spirituality">Spirituality</a></li>
+                <li><a href="#photography">Photography</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>&lt;debugging_the_self /&gt;</h1>
+            <p class="hero-subtitle">Software Engineer | Adventurer | Spiritual Seeker | Photographer</p>
+            <p class="hero-tagline">Compiling life experiences, one line at a time</p>
+            
+            <div class="interests-tags">
+                <span class="interest-tag">💻 Coding</span>
+                <span class="interest-tag">⛰️ Hiking</span>
+                <span class="interest-tag">🏕️ Camping</span>
+                <span class="interest-tag">📸 Photography</span>
+                <span class="interest-tag">🏐 Volleyball</span>
+                <span class="interest-tag">🎮 Gaming</span>
+                <span class="interest-tag">🕉️ Spirituality</span>
+                <span class="interest-tag">✈️ Travel</span>
+            </div>
+        </div>
+    </section>
+
+    <main class="content-sections">
+        <div class="section-header">
+            <h2 class="section-title">📌 Featured</h2>
+        </div>
+
+        <div class="featured-grid">
+            <div class="featured-post">
+                <div class="featured-image">⛰️</div>
+                <div class="featured-content">
+                    <div class="featured-category">Adventures</div>
+                    <h3>Three Days in the Cascades: A Solo Hiking Journey</h3>
+                    <p>My first multi-day solo hike through the North Cascades. What I learned about solitude, self-reliance, and finding peace in the mountains. Plus some stunning photography from alpine lakes at sunrise...</p>
+                    <div class="featured-date">October 12, 2025 • 8 min read</div>
+                </div>
+            </div>
+
+            <div class="sidebar-posts">
+                <div class="sidebar-post">
+                    <div class="blog-category">Tech</div>
+                    <h4>Building a Personal API with FastAPI</h4>
+                    <p>Quick tutorial on setting up a REST API for tracking daily habits...</p>
+                    <div class="featured-date">Oct 10, 2025</div>
+                </div>
+                <div class="sidebar-post">
+                    <div class="blog-category">Spirituality</div>
+                    <h4>Meditation as a Debugging Tool</h4>
+                    <p>How meditation helps me solve coding problems and find mental clarity...</p>
+                    <div class="featured-date">Oct 8, 2025</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2 class="section-title">🗂️ Explore Topics</h2>
+        </div>
+
+        <div class="categories-section">
+            <div class="category-card">
+                <div class="category-icon">💻</div>
+                <h3>Tech & Code</h3>
+                <p class="category-count">18 posts</p>
+                <p>Software engineering insights, tutorials, and coding adventures</p>
+            </div>
+
+            <div class="category-card">
+                <div class="category-icon">⛰️</div>
+                <h3>Adventures</h3>
+                <p class="category-count">24 posts</p>
+                <p>Hiking trails, camping trips, and outdoor explorations</p>
+            </div>
+
+            <div class="category-card">
+                <div class="category-icon">🕉️</div>
+                <h3>Spirituality</h3>
+                <p class="category-count">31 posts</p>
+                <p>Sanatan Dharma studies, meditation, and inner journey</p>
+            </div>
+
+            <div class="category-card">
+                <div class="category-icon">📸</div>
+                <h3>Photography</h3>
+                <p class="category-count">42 photos</p>
+                <p>Landscapes, nature, and moments captured through the lens</p>
+            </div>
+
+            <div class="category-card">
+                <div class="category-icon">🎮</div>
+                <h3>Gaming</h3>
+                <p class="category-count">12 posts</p>
+                <p>Game reviews, thoughts, and the occasional speedrun</p>
+            </div>
+
+            <div class="category-card">
+                <div class="category-icon">🏐</div>
+                <h3>Sports</h3>
+                <p class="category-count">8 posts</p>
+                <p>Pickleball tournaments, volleyball games, staying active</p>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2 class="section-title">📝 Recent Posts</h2>
+            <a href="#" class="view-all">View All →</a>
+        </div>
+
+        <div class="blog-grid">
+            <div class="blog-card">
+                <div class="blog-image">🏕️</div>
+                <div class="blog-content">
+                    <div class="blog-category">Adventures</div>
+                    <h3>Essential Camping Gear for PNW Adventures</h3>
+                    <p>After dozens of camping trips, here's what actually matters in the Pacific Northwest rain...</p>
+                    <div class="blog-meta">
+                        <span>Oct 15, 2025</span>
+                        <span>5 min read</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-image">💻</div>
+                <div class="blog-content">
+                    <div class="blog-category">Tech</div>
+                    <h3>Refactoring Legacy Code: A Meditation</h3>
+                    <p>Approaching messy codebases with the same patience I use for meditation practice...</p>
+                    <div class="blog-meta">
+                        <span>Oct 13, 2025</span>
+                        <span>6 min read</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-image">📖</div>
+                <div class="blog-content">
+                    <div class="blog-category">Spirituality</div>
+                    <h3>Bhagavad Gita Chapter 3: The Yoga of Action</h3>
+                    <p>Study notes on Karma Yoga and how it applies to modern software development...</p>
+                    <div class="blog-meta">
+                        <span>Oct 11, 2025</span>
+                        <span>12 min read</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-image">📸</div>
+                <div class="blog-content">
+                    <div class="blog-category">Photography</div>
+                    <h3>Golden Hour at Mount Rainier</h3>
+                    <p>Photo series from an incredible sunset session at Paradise. Tips on shooting alpine landscapes...</p>
+                    <div class="blog-meta">
+                        <span>Oct 9, 2025</span>
+                        <span>Photo Essay</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-image">🎮</div>
+                <div class="blog-content">
+                    <div class="blog-category">Gaming</div>
+                    <h3>Baldur's Gate 3: A Developer's Perspective</h3>
+                    <p>What game developers can learn from Larian's masterpiece in player choice...</p>
+                    <div class="blog-meta">
+                        <span>Oct 7, 2025</span>
+                        <span>10 min read</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-image">🏐</div>
+                <div class="blog-content">
+                    <div class="blog-category">Sports</div>
+                    <h3>From Beginner to Intermediate: My Pickleball Journey</h3>
+                    <p>Six months of pickleball obsession and what I've learned about the fastest-growing sport...</p>
+                    <div class="blog-meta">
+                        <span>Oct 5, 2025</span>
+                        <span>7 min read</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-about">
+                <h3>About This Blog</h3>
+                <p>Hi! I'm a software engineer exploring life through code, adventure, and spirituality. This is where I share my journey - from debugging software to debugging the self. Join me as I document hiking trails, spiritual insights, photography, and everything in between.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">All Posts</a></li>
+                    <li><a href="#">Photography Portfolio</a></li>
+                    <li><a href="#">Study Notes</a></li>
+                    <li><a href="#">Travel Map</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Connect</h4>
+                <ul>
+                    <li><a href="#">GitHub</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                    <li><a href="#">Email</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Debugging the Self | Built with curiosity and caffeine ☕</p>
+        </div>
+    </footer>
+</body>
+</html>

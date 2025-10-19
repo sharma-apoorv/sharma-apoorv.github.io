@@ -1,0 +1,113 @@
+# US National Parks Tracker
+# To mark a park as visited, change 'visited: false' to 'visited: true'
+# Add the year you visited in 'year_visited' field
+
+parks:
+  # Sample parks - you can add/modify as needed
+  - name: "Acadia"
+    state: "Maine"
+    visited: false
+    year_visited: null
+
+  - name: "Arches"
+    state: "Utah"
+    visited: false
+    year_visited: null
+
+  - name: "Badlands"
+    state: "South Dakota"
+    visited: false
+    year_visited: null
+
+  - name: "Big Bend"
+    state: "Texas"
+    visited: false
+    year_visited: null
+
+  - name: "Bryce Canyon"
+    state: "Utah"
+    visited: false
+    year_visited: null
+
+  - name: "Canyonlands"
+    state: "Utah"
+    visited: false
+    year_visited: null
+
+  - name: "Capitol Reef"
+    state: "Utah"
+    visited: false
+    year_visited: null
+
+  - name: "Death Valley"
+    state: "California/Nevada"
+    visited: false
+    year_visited: null
+
+  - name: "Glacier"
+    state: "Montana"
+    visited: false
+    year_visited: null
+
+  - name: "Grand Canyon"
+    state: "Arizona"
+    visited: false
+    year_visited: null
+
+  - name: "Grand Teton"
+    state: "Wyoming"
+    visited: false
+    year_visited: null
+
+  - name: "Great Smoky Mountains"
+    state: "Tennessee/North Carolina"
+    visited: false
+    year_visited: null
+
+  - name: "Joshua Tree"
+    state: "California"
+    visited: false
+    year_visited: null
+
+  - name: "Mount Rainier"
+    state: "Washington"
+    visited: false
+    year_visited: null
+
+  - name: "Olympic"
+    state: "Washington"
+    visited: false
+    year_visited: null
+
+  - name: "Rocky Mountain"
+    state: "Colorado"
+    visited: false
+    year_visited: null
+
+  - name: "Sequoia"
+    state: "California"
+    visited: false
+    year_visited: null
+
+  - name: "Shenandoah"
+    state: "Virginia"
+    visited: false
+    year_visited: null
+
+  - name: "Yellowstone"
+    state: "Wyoming/Montana/Idaho"
+    visited: false
+    year_visited: null
+
+  - name: "Yosemite"
+    state: "California"
+    visited: false
+    year_visited: null
+
+  - name: "Zion"
+    state: "Utah"
+    visited: false
+    year_visited: null
+
+# Add remaining 42 parks here...
+# Full list: https://www.nps.gov/subjects/nationalparksystem/national-parks.htm
