@@ -25,7 +25,7 @@ There's something profound about standing at the edge of a canyon, hiking throug
 
 ### The Inner Work
 
-My spiritual practice is rooted in **Sanatan Dharm** - the eternal principles that have guided seekers for millennia. Through meditation, self-inquiry, and the study of ancient wisdom, I'm constantly working to debug the patterns and conditioning that limit our potential.
+I'm beginning to explore spiritual practice through Sanatan Dharm - ancient principles that have guided seekers for thousands of years. Through meditation, self-reflection, and learning from these timeless teachings, I'm taking my first steps toward understanding the patterns and conditioning that shape how I see myself and the world.
 
 ### Learning Never Stops
 

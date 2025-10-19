@@ -1,14 +1,15 @@
 # Site settings
 title: Debugging The Self
-description: A personal journey through spirituality, travel, and productivity
+description: A personal journey through spirituality, adventures, and productivity
 author: Apoorv
-email: your.email@example.com
+email: sharmavapoorv@gmail.com
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://sharma-apoorv.github.io" # the base hostname & protocol for your site
 
 # Build settings
 markdown: kramdown
 permalink: /:categories/:year/:month/:day/:title/
+future: true
 plugins:
   - jekyll-feed
   - jekyll-seo-tag

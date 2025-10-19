@@ -5,6 +5,7 @@ date: 2024-12-15
 category: productivity
 tags: [focus, deep-work, book-notes, time-management]
 excerpt: "How Cal Newport's Deep Work framework helped me reclaim my attention and 10x my output."
+featured: true
 ---
 
 ## The Problem
