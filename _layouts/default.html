@@ -5,10 +5,112 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
     <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="{{ '/favicon.svg' | relative_url }}">
+    <link rel="alternate icon" href="{{ '/favicon.ico' | relative_url }}">
+
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Print Styles -->
+    <style media="print">
+        @page {
+            margin: 2cm;
+        }
+
+        body {
+            background: white !important;
+            color: black !important;
+            font-size: 12pt;
+            line-height: 1.5;
+        }
+
+        /* Hide non-essential elements */
+        .site-header,
+        .site-footer,
+        .back-to-top,
+        .social-share,
+        .post-navigation,
+        .mobile-menu-toggle,
+        .search-container {
+            display: none !important;
+        }
+
+        /* Ensure content is visible */
+        .post-content,
+        .post-header,
+        .about-content-wrapper {
+            color: black !important;
+        }
+
+        /* Reset backgrounds */
+        .post-card,
+        .section-card,
+        .error-debug {
+            background: white !important;
+            border: 1px solid #ccc !important;
+            box-shadow: none !important;
+        }
+
+        /* Handle links */
+        a {
+            color: black !important;
+            text-decoration: underline;
+        }
+
+        a[href]:after {
+            content: " (" attr(href) ")";
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        /* Don't show URLs for anchors and javascript links */
+        a[href^="#"]:after,
+        a[href^="javascript:"]:after {
+            content: "";
+        }
+
+        /* Page breaks */
+        h1, h2, h3 {
+            page-break-after: avoid;
+            color: black !important;
+        }
+
+        img {
+            max-width: 100% !important;
+            page-break-inside: avoid;
+        }
+
+        /* Tables */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+
+        /* Code blocks */
+        pre, code {
+            background: #f5f5f5 !important;
+            border: 1px solid #ddd !important;
+            page-break-inside: avoid;
+            color: black !important;
+        }
+
+        /* Tags */
+        .tag {
+            border: 1px solid #ccc !important;
+            background: #f5f5f5 !important;
+            color: black !important;
+        }
+    </style>
+
     {% seo %}
 </head>
 <body>

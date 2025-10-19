@@ -4,7 +4,7 @@ description: A personal journey through spirituality, adventures, and productivi
 author: Apoorv
 email: sharmavapoorv@gmail.com
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://sharma-apoorv.github.io" # the base hostname & protocol for your site
+url: "https://debuggingtheself.com/" # the base hostname & protocol for your site
 
 # Build settings
 markdown: kramdown
@@ -13,6 +13,20 @@ future: true
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
+
+# SEO settings
+twitter:
+  username: # Add your Twitter username
+  card: summary
+
+social:
+  name: Apoorv
+  links: # Add your social media profiles here
+
+# jekyll-seo-tag settings
+webmaster_verifications:
+  google: # Add Google verification code
+  bing: # Add Bing verification code
 
 # Collections
 collections:

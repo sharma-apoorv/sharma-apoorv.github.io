@@ -18,6 +18,41 @@
 }
 
 /* ============================================
+   Animated Gradient Keyframes
+   ============================================ */
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes gradientRotate {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+    100% {
+        filter: hue-rotate(360deg);
+    }
+}
+
+@keyframes borderGlow {
+    0%, 100% {
+        border-color: rgba(6, 182, 212, 0.3);
+        box-shadow: 0 0 20px rgba(6, 182, 212, 0.2);
+    }
+    50% {
+        border-color: rgba(139, 92, 246, 0.6);
+        box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
+    }
+}
+
+/* ============================================
    Base Styles
    ============================================ */
 * {
@@ -32,6 +67,28 @@ body {
     color: var(--text-primary);
     line-height: 1.6;
     font-size: 16px;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 20%, rgba(6, 182, 212, 0.08), transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.08), transparent 50%),
+                radial-gradient(circle at 40% 70%, rgba(236, 72, 153, 0.06), transparent 40%);
+    background-size: 200% 200%;
+    pointer-events: none;
+    z-index: 0;
+    animation: gradientShift 20s ease infinite;
+}
+
+body > * {
+    position: relative;
+    z-index: 1;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -117,10 +174,12 @@ pre code {
     font-family: 'Fira Code', monospace;
     font-size: 1.2rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+    background: linear-gradient(135deg, #06b6d4, #8b5cf6, #ec4899, #06b6d4);
+    background-size: 200% 200%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    animation: gradientShift 6s ease infinite;
 }
 
 .nav-links {
@@ -153,8 +212,10 @@ pre code {
     left: 0;
     width: 0;
     height: 2px;
-    background: linear-gradient(90deg, #06b6d4, #8b5cf6);
+    background: linear-gradient(90deg, #06b6d4, #8b5cf6, #ec4899, #06b6d4);
+    background-size: 200% 100%;
     transition: width 0.3s ease;
+    animation: gradientShift 4s ease infinite;
 }
 
 .nav-links a:hover::after {
@@ -203,11 +264,13 @@ pre code {
 .site-title {
     font-size: 3.5rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #06b6d4, #8b5cf6, #ec4899);
+    background: linear-gradient(135deg, #06b6d4, #8b5cf6, #ec4899, #06b6d4);
+    background-size: 300% 300%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin-bottom: 1rem;
+    animation: gradientShift 8s ease infinite;
 }
 
 .cursor {
@@ -269,11 +332,33 @@ pre code {
 .post-card.featured {
     border: 1px solid rgba(6, 182, 212, 0.3);
     background: var(--bg-secondary);
+    position: relative;
+    animation: borderGlow 4s ease-in-out infinite;
 }
 
 .post-card.featured:hover {
     border-color: rgba(6, 182, 212, 0.6);
     box-shadow: 0 20px 60px rgba(6, 182, 212, 0.3);
+}
+
+.post-card.featured::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #06b6d4, #8b5cf6, #ec4899, #06b6d4);
+    background-size: 300% 300%;
+    border-radius: 15px;
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.3s ease;
+    animation: gradientShift 6s ease infinite;
+}
+
+.post-card.featured:hover::before {
+    opacity: 0.3;
 }
 
 .post-meta {
@@ -294,6 +379,11 @@ pre code {
 
 .post-date {
     color: var(--text-muted);
+}
+
+.post-reading-time {
+    color: var(--accent-secondary);
+    font-weight: 500;
 }
 
 .post-title {
@@ -357,9 +447,11 @@ pre code {
     left: 0;
     width: 100%;
     height: 4px;
-    background: linear-gradient(90deg, #06b6d4, #8b5cf6);
+    background: linear-gradient(90deg, #06b6d4, #8b5cf6, #ec4899, #06b6d4);
+    background-size: 200% 100%;
     transform: scaleX(0);
     transition: transform 0.3s ease;
+    animation: gradientShift 6s ease infinite;
 }
 
 .section-card:hover::before {
@@ -420,10 +512,12 @@ pre code {
 
 .category-title {
     font-size: 3rem;
-    background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+    background: linear-gradient(135deg, #06b6d4, #8b5cf6, #ec4899, #06b6d4);
+    background-size: 300% 300%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    animation: gradientShift 8s ease infinite;
 }
 
 .category-description {
@@ -541,6 +635,75 @@ pre code {
     margin-bottom: 2rem;
 }
 
+.social-share {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+}
+
+.share-label {
+    font-family: 'Fira Code', monospace;
+    color: var(--text-primary);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.share-buttons {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.share-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.share-btn svg {
+    flex-shrink: 0;
+}
+
+.share-btn:hover {
+    transform: translateY(-2px);
+    color: var(--text-primary);
+}
+
+.share-btn.twitter:hover {
+    border-color: #1DA1F2;
+    background: rgba(29, 161, 242, 0.1);
+    color: #1DA1F2;
+}
+
+.share-btn.linkedin:hover {
+    border-color: #0077B5;
+    background: rgba(0, 119, 181, 0.1);
+    color: #0077B5;
+}
+
+.share-btn.reddit:hover {
+    border-color: #FF4500;
+    background: rgba(255, 69, 0, 0.1);
+    color: #FF4500;
+}
+
+.share-btn.email:hover {
+    border-color: var(--accent-primary);
+    background: rgba(6, 182, 212, 0.1);
+    color: var(--accent-primary);
+}
+
 .tags-label {
     font-family: 'Fira Code', monospace;
     color: var(--text-muted);
@@ -614,6 +777,29 @@ pre code {
     color: var(--text-muted);
     font-size: 0.85rem;
     margin-top: 0.5rem;
+}
+
+.footer-links {
+    margin-top: 1rem;
+}
+
+.rss-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--accent-primary);
+    font-family: 'Fira Code', monospace;
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.rss-link:hover {
+    border-color: var(--accent-primary);
+    background: rgba(6, 182, 212, 0.1);
+    transform: translateY(-2px);
 }
 
 /* ============================================
@@ -692,11 +878,13 @@ pre code {
 
 .page-title {
     font-size: 3rem;
-    background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+    background: linear-gradient(135deg, #06b6d4, #8b5cf6, #ec4899, #06b6d4);
+    background-size: 300% 300%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin-bottom: 1rem;
+    animation: gradientShift 8s ease infinite;
 }
 
 .page-subtitle {
@@ -821,11 +1009,13 @@ pre code {
 .stat-number {
     font-size: 3rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+    background: linear-gradient(135deg, #06b6d4, #8b5cf6, #ec4899, #06b6d4);
+    background-size: 300% 300%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     font-family: 'Fira Code', monospace;
+    animation: gradientShift 8s ease infinite;
 }
 
 .stat-label {
@@ -852,7 +1042,8 @@ pre code {
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #06b6d4, #8b5cf6, #ec4899);
+    background: linear-gradient(90deg, #06b6d4, #8b5cf6, #ec4899, #06b6d4);
+    background-size: 200% 100%;
     transition: width 1s ease;
     display: flex;
     align-items: center;
@@ -861,6 +1052,7 @@ pre code {
     color: white;
     font-weight: 600;
     font-size: 0.9rem;
+    animation: gradientShift 8s ease infinite;
 }
 
 /* Parks Filter */
@@ -993,7 +1185,8 @@ pre code {
 .stat-card-large .stat-number {
     font-size: 2rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+    background: linear-gradient(135deg, #06b6d4, #8b5cf6, #ec4899, #06b6d4);
+    background-size: 300% 300%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -1001,6 +1194,7 @@ pre code {
     margin-bottom: 0.5rem;
     word-break: break-word;
     line-height: 1.2;
+    animation: gradientShift 8s ease infinite;
 }
 
 .stat-card-large .stat-label {
@@ -1077,7 +1271,9 @@ pre code {
 
 .week-square.lived,
 .year-square.lived {
-    background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+    background: linear-gradient(135deg, #06b6d4, #8b5cf6, #ec4899, #06b6d4);
+    background-size: 300% 300%;
+    animation: gradientShift 10s ease infinite;
 }
 
 .week-square.current,
@@ -1125,7 +1321,9 @@ pre code {
 }
 
 .legend-box.lived {
-    background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+    background: linear-gradient(135deg, #06b6d4, #8b5cf6, #ec4899, #06b6d4);
+    background-size: 300% 300%;
+    animation: gradientShift 10s ease infinite;
 }
 
 .legend-box.current {
@@ -1215,4 +1413,156 @@ pre code {
 
 .dropdown-toggle::after {
     margin-left: 0.3rem;
+}
+
+/* ============================================
+   404 Error Page
+   ============================================ */
+.error-page {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-content {
+    text-align: center;
+    max-width: 600px;
+}
+
+.error-title {
+    font-size: 8rem;
+    font-family: 'Fira Code', monospace;
+    background: linear-gradient(135deg, #06b6d4, #8b5cf6, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0;
+    line-height: 1;
+}
+
+.error-subtitle {
+    font-size: 2rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.error-message {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.error-suggestions {
+    margin: 3rem 0;
+}
+
+.error-suggestions p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.error-links {
+    list-style: none;
+    padding: 0;
+}
+
+.error-links li {
+    margin: 0.8rem 0;
+}
+
+.error-links a {
+    font-family: 'Fira Code', monospace;
+    font-size: 1rem;
+    color: var(--accent-primary);
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.error-links a:hover {
+    border-color: var(--accent-primary);
+    background: rgba(6, 182, 212, 0.1);
+    transform: translateY(-2px);
+}
+
+.error-debug {
+    margin-top: 3rem;
+    padding: 1.5rem;
+    background: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.debug-message {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.debug-message code {
+    color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+    .error-title {
+        font-size: 5rem;
+    }
+
+    .error-subtitle {
+        font-size: 1.5rem;
+    }
+
+    .error-message {
+        font-size: 1rem;
+    }
+}
+
+/* ============================================
+   Back to Top Button
+   ============================================ */
+.back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #06b6d4, #8b5cf6, #ec4899, #06b6d4);
+    background-size: 300% 300%;
+    border: none;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    z-index: 999;
+    box-shadow: 0 4px 20px rgba(6, 182, 212, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: gradientShift 6s ease infinite;
+}
+
+.back-to-top:hover {
+    transform: translateY(0) scale(1.1);
+    box-shadow: 0 6px 30px rgba(6, 182, 212, 0.6);
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    .back-to-top {
+        bottom: 1.5rem;
+        right: 1.5rem;
+        width: 45px;
+        height: 45px;
+    }
 }
